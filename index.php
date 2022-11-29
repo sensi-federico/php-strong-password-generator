@@ -2,19 +2,24 @@
 Dobbiamo creare una pagina che permetta ai nostri utenti di utilizzare il nostro generatore di password (abbastanza) sicure.
 L’esercizio è suddiviso in varie milestone ed è molto importante svilupparle in modo ordinato.
 
-Milestone 1 . DONE
+Milestone 1  DONE
 Creare un form che invii in GET la lunghezza della password. 
 Una nostra funzione utilizzerà questo dato per generare una password casuale (composta da lettere, lettere maiuscole, numeri e simboli) da restituire all’utente. 
 Scriviamo tutto (logica e layout) in un unico file index.php
 
-Milestone 2
+Milestone 2  DONE
 Verificato il corretto funzionamento del nostro codice, spostiamo la logica in un file functions.php che includeremo poi nella pagina principale -->
 <?php
 
-include '/functions.php';
+include 'functions.php';
 
-gen_psw($_GET['psw_length']);
+$alert = '';
 
+if (isset($_GET['psw_length']) and $_GET['psw_length'] <= 8) {
+    gen_psw($_GET['psw_length']);
+} else {
+    $alert = 'Inserisci un numero maggiore di 8';
+}
 ?>
 
 <!DOCTYPE html>
@@ -29,7 +34,12 @@ gen_psw($_GET['psw_length']);
 
     <style>
         .center {
-            height: 700px;
+            height: 400px;
+            background-color: lightgrey;
+        }
+
+        .button {
+            margin-top: 3rem;
         }
     </style>
 
@@ -37,18 +47,25 @@ gen_psw($_GET['psw_length']);
 
 <body class="bg-dark">
 
+    <h1 class="text-white-50 text-center pt-3">Strong Password Generator</h1>
+    <h3 class="text-white text-center">Genera una password sicura</h3>
+
     <div class="container py-5">
-        <div class="center d-flex flex-column pt-5 bg-danger">
+        <div class="center pt-5">
             <form action="index.php" method="get">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="reset" class="btn btn-warning">Reset</button>
-                <input type="text" name="psw_length" id="psw_length">
+                <div class="input-length d-flex justify-content-center">
+                    <h4 class="me-5">Inserisci la lunghezza della password</h4>
+                    <input type="text" name="psw_length" id="psw_length">
+                </div>
+                <?php if (isset($_GET['psw_length'])) : ?>
+                    <h4 class="text-success text-center mt-5"><?= gen_psw($_GET['psw_length']) ?></h4>
+                <?php else : ?>
+                    <h4 class="text-danger text-center mt-5"><small><?= $alert ?></small></h4>
+                <?php endif ?>
+                <div class="button d-flex justify-content-center ">
+                    <button type="submit" class="btn btn-primary me-3">Submit</button>
+                </div>
             </form>
-            <?php if (isset($_GET['psw_length']) && $_GET['psw_length'] > 8) : ?>
-                <h4><?= gen_psw($_GET['psw_length']) ?></h4>
-            <?php else : ?>
-                <h4><?= $alert ?></h4>
-            <?php endif ?>
         </div>
     </div>
 
