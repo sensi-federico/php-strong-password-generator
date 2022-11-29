@@ -11,14 +11,14 @@ Milestone 2
 Verificato il corretto funzionamento del nostro codice, spostiamo la logica in un file functions.php che includeremo poi nella pagina principale -->
 
 <?php
+$alert = '';
 
-$psw_length = $_GET['psw_length'];
-if ($psw_length < 8) {
-    echo 'Inserisci un numero maggiore di 8';
+if (isset($_GET['psw_length']) and $_GET['psw_length'] < 8) {
+    $alert = 'Inserisci un numero maggiore di 8';
 } else {
     function gen_psw($length)
     {
-        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,;:!?(){}[]#^.$/*-&@+£%";
+        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,;:!?(){}[]#.$/*-&@+£%";
         $psw = '';
 
         for ($i = 0; $i < $length; $i++) {
@@ -58,16 +58,16 @@ if ($psw_length < 8) {
         <div class="center d-flex flex-column pt-5 bg-danger">
             <form action="index.php" method="get">
                 <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-warning">Reset</button>
                 <input type="text" name="psw_length" id="psw_length">
             </form>
-            <?php if (isset($_GET['psw_length'])) { ?>
+            <?php if (isset($_GET['psw_length']) && $_GET['psw_length'] > 8) { ?>
                 <h4><?= gen_psw($_GET['psw_length']) ?></h4>
             <?php } else { ?>
-                <h4>**************</h4>
+                <h4><?= $alert ?></h4>
             <?php } ?>
         </div>
     </div>
-
 
 </body>
 
