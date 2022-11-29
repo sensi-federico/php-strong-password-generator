@@ -9,30 +9,13 @@ Scriviamo tutto (logica e layout) in un unico file index.php
 
 Milestone 2
 Verificato il corretto funzionamento del nostro codice, spostiamo la logica in un file functions.php che includeremo poi nella pagina principale -->
-
 <?php
-$alert = '';
 
-if (isset($_GET['psw_length']) and $_GET['psw_length'] < 8) {
-    $alert = 'Inserisci un numero maggiore di 8';
-} else {
-    function gen_psw($length)
-    {
-        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,;:!?(){}[]#.$/*-&@+£%";
-        $psw = '';
+include '/functions.php';
 
-        for ($i = 0; $i < $length; $i++) {
-            $random = rand(0, strlen($chars) - 1);
-            $psw .= substr($chars, $random, 1);
-        }
-
-        return $psw;
-    }
-}
-
+gen_psw($_GET['psw_length']);
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -61,11 +44,11 @@ if (isset($_GET['psw_length']) and $_GET['psw_length'] < 8) {
                 <button type="reset" class="btn btn-warning">Reset</button>
                 <input type="text" name="psw_length" id="psw_length">
             </form>
-            <?php if (isset($_GET['psw_length']) && $_GET['psw_length'] > 8) { ?>
+            <?php if (isset($_GET['psw_length']) && $_GET['psw_length'] > 8) : ?>
                 <h4><?= gen_psw($_GET['psw_length']) ?></h4>
-            <?php } else { ?>
+            <?php else : ?>
                 <h4><?= $alert ?></h4>
-            <?php } ?>
+            <?php endif ?>
         </div>
     </div>
 
